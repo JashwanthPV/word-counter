@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words and Paragraphs Counter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function countWords() {
+            let text = document.getElementById("textInput").value;
+
+            fetch("/count", {
+                method: "POST",
+                body: new URLSearchParams({ text: text }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("wordCount").innerText = `Words: ${data.words}`;
+                document.getElementById("paragraphCount").innerText = `Paragraphs: ${data.paragraphs}`;
+                document.getElementById("charCount").innerText = `Characters: ${data.characters}`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Words and Paragraphs Counter</h1>
+        <textarea id="textInput" placeholder="Enter your text here..."></textarea>
+        <button onclick="countWords()">COUNT</button>
+        <div class="result">
+            <p id="wordCount">Words: 0</p>
+            <p id="paragraphCount">Paragraphs: 0</p>
+            <p id="charCount">Characters: 0</p>
+        </div>
+    </div>
+</body>
+</html>
